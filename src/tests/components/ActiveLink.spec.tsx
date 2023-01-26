@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { ActiveLink } from './index'
+import { ActiveLink } from '../../components/ActiveLink/index'
 import React from 'react'
 
 

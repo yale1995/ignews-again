@@ -1,16 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import styles from "./home.module.scss";
-
 import {stripe} from "../services/stripe";
-import Head from "next/head";
-
 import { GetStaticProps } from "next";
 import { SubscribeButton } from "../components/SubscribeButton";
+
+import styles from "./home.module.scss";
+import Head from "next/head";
 
 interface HomeProps {
   product: {
     priceId: string;
-    amount: number;
+    amount: string;
   };
 }
 
@@ -30,7 +29,7 @@ export default function Home({ product }: HomeProps) {
             Get access to all the publications
             <br /> <span>for {product.amount} month</span>
           </p>
-          <SubscribeButton priceId={product.priceId} />
+          <SubscribeButton />
         </section>
         <img src="/images/avatar.svg" alt="girl coding" />
       </main>
