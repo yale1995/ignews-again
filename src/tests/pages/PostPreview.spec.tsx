@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { mocked } from 'jest-mock';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Post from '../../pages/posts/preview/[slug]'
+import Home from '../../pages';
 
 jest.mock("../../services/prismic", () => {
     return {
@@ -19,6 +20,9 @@ jest.mock('next/router', () => ({
         push: jest.fn(),
     }),
 }))
+
+
+jest.mock('../../services/stripe')
 
 const post = {
     slug: 'fake-slug',
@@ -58,7 +62,7 @@ describe('Post page', () => {
 
     })
 
-    it('should redirects user to slug-route if subscription is found', async () => {
+    it('should redirects user to home if the button "subscribe now" to be clicked', async () => {
         const useRouterMocked = mocked(useRouter)
         const useSessionMocked = mocked(useSession)
         const pushMock = jest.fn()
@@ -79,6 +83,12 @@ describe('Post page', () => {
         render(<Post post={post} />)
         const subscribeLink = screen.getByText(/Subscribe/)
         expect(subscribeLink).toHaveAttribute('href')
+        waitFor(() => {
+            return expect(screen.getByText(/Subscribe/)).not.toBeInTheDocument()
+        })
+        waitFor(() => {
+            return expect(screen.getByText(/\$10,00/)).toBeInTheDocument()
+        })
     })
 
 })        
