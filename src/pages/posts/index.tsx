@@ -37,11 +37,11 @@ export default function Posts({posts}: PostsProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const response = await prismic.getByType("publication", {
+  const response = await prismic.getAllByType("publication", {
     pageSize: 100,
   });
 
-  const posts = response.results.map((post) => {
+  const posts = await response?.map((post) => {
     return {
       slug: post.uid,
       title: RichText.asText(post.data.title),
